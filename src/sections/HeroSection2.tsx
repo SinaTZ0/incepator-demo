@@ -3,66 +3,102 @@ import MagneticButton from "../components/MagneticButton";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 import { ArrowDownLeft, ArrowUpRight, Play, Sparkles } from "lucide-react";
 import { gsap } from "gsap";
+import { cn } from "../lib/utils";
 
-// --- Types ---
+// --- Types / constants ---
+type Variant = "default" | "accent" | "glass";
+
+interface VariantStyle {
+  container: string;
+  text: string;
+  subText: string;
+  dotColors: string[];
+}
+
+const defaultVariantClasses: Record<Variant, VariantStyle> = {
+  default: {
+    // card background on light theme, falls back to text-background in dark mode via CSS vars
+    container: "bg-card border-gray-200 stat-item glass-card",
+    text: "dark:text-white text-dark",
+    subText: "dark:text-white text-dark/80",
+    dotColors: ["bg-gray-800", "bg-gray-500", "bg-gray-300"],
+  },
+  accent: {
+    container: "bg-accent border-accent-400",
+    text: "text-accent-foreground",
+    subText: "text-accent-foreground",
+    dotColors: ["bg-white", "bg-indigo-200", "bg-indigo-400"],
+  },
+  glass: {
+    container: "glass-card",
+    text: "text-text-primary",
+    subText: "text-text-secondary",
+    dotColors: ["bg-white/50", "bg-white/30", "bg-white/10"],
+  },
+};
+
 interface TileProps {
   title: string;
   subtitle?: string;
   img?: string;
   cta?: { label: string; onClick?: () => void } | null;
   className?: string;
-  variant?: "default" | "accent" | "glass";
+  variant?: Variant;
+  /**
+   * Allows callers to override a subset of the default variant styles.  Any
+   * values provided here will be merged shallowly with the defaults.
+   */
+  variantClasses?: Partial<Record<Variant, Partial<VariantStyle>>>;
   icon?: React.ReactNode;
 }
 
 // --- Sub-Component: Tile ---
-const Tile: React.FC<TileProps> = ({ title, subtitle, img, cta, className = "", variant = "default", icon }) => {
+const Tile: React.FC<TileProps> = ({
+  title,
+  subtitle,
+  img,
+  cta,
+  className = "",
+  variant = "default",
+  variantClasses: userVariantClasses,
+  icon,
+}) => {
   const reduced = useReducedMotion();
   const scaleClass = reduced ? "" : "group-hover:scale-105 transition-transform duration-700 ease-out";
 
-  // using theme tokens so light/dark mode works consistently with other sections (see StationedTeamsSection)
-  const variantClasses: Record<
-    NonNullable<TileProps["variant"]>,
-    {
-      container: string;
-      text: string;
-      subText: string;
-      dotColors: string[];
-    }
-  > = {
+  // merge any overrides supplied by the caller with the defaults
+  const mergedVariantClasses: Record<Variant, VariantStyle> = {
     default: {
-      // card background on light theme, falls back to text-background in dark mode via CSS vars
-      container: "bg-card border-gray-200 stat-item glass-card",
-      text: "text-text-primary",
-      subText: "text-text-secondary",
-      dotColors: ["bg-gray-800", "bg-gray-500", "bg-gray-300"],
+      ...defaultVariantClasses.default,
+      ...(userVariantClasses?.default || {}),
     },
     accent: {
-      container: "bg-accent border-accent-400",
-      text: "text-accent-foreground",
-      subText: "text-accent-foreground",
-      dotColors: ["bg-white", "bg-indigo-200", "bg-indigo-400"],
+      ...defaultVariantClasses.accent,
+      ...(userVariantClasses?.accent || {}),
     },
     glass: {
-      container: "glass-card",
-      text: "text-text-primary",
-      subText: "text-text-secondary",
-      dotColors: ["bg-white/50", "bg-white/30", "bg-white/10"],
+      ...defaultVariantClasses.glass,
+      ...(userVariantClasses?.glass || {}),
     },
   };
 
-  const currentStyle = variantClasses[variant];
+  const currentStyle = mergedVariantClasses[variant];
   const hasImage = !!img;
 
   return (
     <article
-      className={`invert group relative flex flex-col justify-between p-6 h-full overflow-hidden rounded-2xl ${currentStyle.container} ${className} hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500`}
+      className={cn(
+        "group relative flex flex-col justify-between p-6 h-full overflow-hidden rounded-2xl",
+        currentStyle.container,
+        className,
+        "hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500",
+      )}
     >
       {/* Background Image */}
       {hasImage && (
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <img src={img} alt="" className={`invert w-full h-full object-cover opacity-40 ${scaleClass}`} />
-          <div className=" absolute inset-0 bg-gradient-to-t from-background/10 via-background/10 to-transparent" />
+          <img src={img} alt="" className={`w-full h-full object-cover opacity-80 ${scaleClass}`} />
+          <div className="absolute inset-0 bg-blue-300/50 dark:bg-slate-900/40" />
         </div>
       )}
 
@@ -71,22 +107,26 @@ const Tile: React.FC<TileProps> = ({ title, subtitle, img, cta, className = "", 
         <div>
           {/* Header: Icon + Dots */}
           <div className="flex items-center justify-between mb-4 w-full">
-            {icon && <div className="p-2 rounded-full bg-white/10 text-text-primary">{icon}</div>}
+            {icon && <div className={cn("p-2 rounded-full bg-white/10 text-text-primary")}>{icon}</div>}
             <div className="flex items-center gap-1.5 opacity-60 group-hover:opacity-100 transition-opacity" dir="ltr">
               {currentStyle.dotColors.map((color, i) => (
-                <span key={i} className={`w-1.5 h-1.5 rounded-full ${color}`} aria-hidden />
+                <span key={i} className={cn("w-1.5 h-1.5 rounded-full", color)} aria-hidden />
               ))}
             </div>
           </div>
 
-          <h3 className={`text-xl font-bold tracking-tight ${currentStyle.text}`}>{title}</h3>
-          {subtitle && <p className={`mt-2 text-sm leading-relaxed ${currentStyle.subText}`}>{subtitle}</p>}
+          <h3 className={cn("text-xl font-bold tracking-tight", currentStyle.text)}>{title}</h3>
+          {subtitle && <p className={cn("mt-2 text-sm leading-relaxed", currentStyle.subText)}>{subtitle}</p>}
         </div>
 
         {cta && (
           <div className="mt-4 flex justify-end">
             <button
-              className={`flex items-center gap-1 text-xs font-bold uppercase tracking-wider ${hasImage ? "text-text-primary" : currentStyle.text} opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300`}
+              className={cn(
+                "flex items-center gap-1 text-xs font-bold uppercase tracking-wider",
+                hasImage ? "text-text-primary" : currentStyle.text,
+                "opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300",
+              )}
             >
               {cta.label}
               <ArrowUpRight className="w-3 h-3" />
@@ -202,6 +242,12 @@ export default function HeroBento() {
                 variant="default"
                 icon={<Sparkles className="w-4 h-4" />}
                 cta={{ label: "بیشتر" }}
+                variantClasses={{
+                  default: {
+                    text: "text-black dark:invert", // ← override the heading colour
+                    subText: "text-black/80 dark:invert", // optional: adjust subtitle too
+                  },
+                }}
               />
             </div>
 

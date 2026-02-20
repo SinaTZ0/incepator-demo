@@ -56,13 +56,13 @@ const Tile: React.FC<TileProps> = ({ title, subtitle, img, cta, className = "", 
 
   return (
     <article
-      className={`group relative flex flex-col justify-between p-6 h-full overflow-hidden rounded-2xl ${currentStyle.container} ${className} hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500`}
+      className={`invert group relative flex flex-col justify-between p-6 h-full overflow-hidden rounded-2xl ${currentStyle.container} ${className} hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500`}
     >
       {/* Background Image */}
       {hasImage && (
         <div className="absolute inset-0 z-0 overflow-hidden">
-          <img src={img} alt="" className={`w-full h-full object-cover opacity-40 ${scaleClass}`} />
-          <div className="absolute inset-0 bg-gradient-to-t from-dark-lifted via-dark-lifted/60 to-transparent" />
+          <img src={img} alt="" className={`invert w-full h-full object-cover opacity-40 ${scaleClass}`} />
+          <div className=" absolute inset-0 bg-gradient-to-t from-background/10 via-background/10 to-transparent" />
         </div>
       )}
 
@@ -221,7 +221,8 @@ export default function HeroBento() {
               <Tile
                 title="شبکه‌سازی"
                 subtitle="ارتباط با سرمایه‌گذاران و شرکای تجاری کلیدی"
-                variant="glass"
+                img="/network.webp"
+                variant="default"
                 icon={<ArrowUpRight className="w-4 h-4" />}
                 cta={{ label: "عضویت" }}
               />
@@ -229,13 +230,19 @@ export default function HeroBento() {
 
             {/* Tile 5: Success Stories */}
             <div className="grid-tile">
-              <Tile title="موفقیت‌ها" subtitle="داستان تیم‌های برتر" variant="default" cta={{ label: "خواندن" }} />
+              <Tile
+                title="موفقیت‌ها"
+                subtitle="داستان تیم‌های برتر"
+                img="/success.webp"
+                variant="default"
+                cta={{ label: "خواندن" }}
+              />
             </div>
             <div className="grid-tile md:col-span-2">
               <Tile
                 title="مدیریت"
                 subtitle="ابزارهای داخلی برای تیم‌ها و مدیران"
-                variant="glass"
+                variant="default"
                 img="/industry_presentation.jpg"
                 icon={<ArrowUpRight className="w-4 h-4" />}
                 cta={{ label: "عضویت" }}

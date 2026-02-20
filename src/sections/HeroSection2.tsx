@@ -88,7 +88,7 @@ const Tile: React.FC<TileProps> = ({
   return (
     <article
       className={cn(
-        "group relative flex flex-col justify-between p-6 h-full overflow-hidden rounded-2xl",
+        "group relative flex flex-col justify-between p-6 h-full overflow-hidden rounded-none",
         currentStyle.container,
         className,
         "hover:shadow-2xl hover:shadow-indigo-500/10 transition-all duration-500",
@@ -141,7 +141,6 @@ const Tile: React.FC<TileProps> = ({
 // --- Main Hero Component ---
 export default function HeroBento() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Entrance Animation
@@ -161,139 +160,129 @@ export default function HeroBento() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full min-h-screen  text-text-primary overflow-hidden selection:bg-indigo-500 selection:text-text-primary font-sans"
+      className="relative w-full min-h-screen text-text-primary selection:bg-indigo-500 selection:text-text-primary font-sans"
       dir="rtl"
       lang="fa"
     >
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-indigo/5 to-transparent pointer-events-none" />
 
-      <div className="relative z-10 container mx-auto px-6 min-h-screen lg:h-screen flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-8 py-20 lg:py-0">
-        {/* LEFT SIDE: Content & Intro */}
-        <div ref={textRef} className="w-full lg:w-5/12 flex flex-col items-start text-right space-y-8">
-          {/* Badge */}
-          <div className="hero-subtext inline-flex items-center gap-2 px-3 py-1 rounded-full border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-medium tracking-wide">
-            <Sparkles className="w-3 h-3" />
-            <span>نسخه ۲.۰ مرکز نوآوری</span>
+      <div className="relative z-10 w-full h-full p-4 lg:p-6">
+        <div className="bento-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 lg:grid-rows-3 auto-rows-fr w-full min-h-[90svh] mt-12">
+          <article className="grid-tile lg:col-span-2 lg:row-span-2 row-span-2 p-6 lg:p-8 glass-card border border-white/10 rounded-none flex flex-col justify-between text-right overflow-hidden">
+            <div className="space-y-8">
+              <div className="hero-subtext inline-flex items-center gap-2 px-3 py-1 border border-indigo-500/30 bg-indigo-500/10 text-indigo-300 text-xs font-medium tracking-wide rounded-none">
+                <Sparkles className="w-3 h-3" />
+                <span>نسخه ۲.۰ مرکز نوآوری</span>
+              </div>
+
+              <div className="space-y-2">
+                <h1 className="hero-headline text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black tracking-tighter leading-[1.1] bg-clip-text">
+                  مرکز نوآوری دانشگاه صنعتی همدان
+                </h1>
+              </div>
+
+              <p className="hero-subtext text-base lg:text-lg text-text-secondary leading-relaxed max-w-2xl border-r-2 border-indigo-500/50 pr-4">
+                ما پل ارتباطی میان ایده‌های ناب دانشگاهی و بازار جهانی هستیم. فضایی امن برای رشد، یادگیری و
+                سرمایه‌گذاری.
+              </p>
+
+              <div className="hero-cta flex flex-wrap items-center gap-4 pt-2">
+                <MagneticButton className="group relative px-8 py-4 bg-white text-black rounded-none font-bold text-lg hover:bg-indigo-50 transition-colors overflow-hidden">
+                  <span className="relative z-10 flex items-center gap-2">
+                    شروع به کار
+                    <ArrowDownLeft className="w-5 h-5 group-hover:translate-y-1 group-hover:-translate-x-1 transition-transform" />
+                  </span>
+                </MagneticButton>
+
+                <MagneticButton className="px-8 py-4 rounded-none font-medium text-text-primary border border-white/20 hover:bg-white/10 transition-colors flex items-center gap-2">
+                  <Play className="w-4 h-4 fill-current" />
+                  مشاهده ویدیو
+                </MagneticButton>
+              </div>
+            </div>
+
+            <div className="hero-subtext flex flex-wrap gap-8 pt-8 border-t border-white/10 w-full">
+              <div>
+                <div className="text-2xl font-bold text-text-primary">+۱۲۰</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wider">استارتاپ فعال</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-text-primary">$۴.۵M</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wider">سرمایه جذب شده</div>
+              </div>
+              <div>
+                <div className="text-2xl font-bold text-text-primary">۹۸٪</div>
+                <div className="text-xs text-gray-500 uppercase tracking-wider">رضایت</div>
+              </div>
+            </div>
+          </article>
+
+          <div className="grid-tile lg:col-span-2 h-full">
+            <Tile
+              title="شبکه‌سازی"
+              subtitle="ارتباط با سرمایه‌گذاران و شرکای تجاری کلیدی"
+              img="/network.webp"
+              variant="default"
+              icon={<ArrowUpRight className="w-4 h-4" />}
+              cta={{ label: "عضویت" }}
+            />
           </div>
 
-          {/* Headline */}
-          <div className="space-y-2">
-            <h1 className="hero-headline text-5xl lg:text-7xl font-black tracking-tighter leading-[1.1] bg-clip-text">
-              مرکز نوآوری دانشگاه صنعتی همدان
-            </h1>
+          <div className="grid-tile lg:row-span-2 h-full">
+            <Tile
+              title="مدیریت"
+              subtitle="ابزارهای داخلی برای تیم‌ها و مدیران"
+              variant="default"
+              img="/industry_presentation.jpg"
+              icon={<ArrowUpRight className="w-4 h-4" />}
+              cta={{ label: "عضویت" }}
+            />
           </div>
 
-          {/* Description */}
-          <p className="hero-subtext text-lg text-text-secondary leading-relaxed max-w-md border-r-2 border-indigo-500/50 pr-4">
-            ما پل ارتباطی میان ایده‌های ناب دانشگاهی و بازار جهانی هستیم. فضایی امن برای رشد، یادگیری و سرمایه‌گذاری.
-          </p>
-
-          {/* CTAs */}
-          <div className="hero-cta flex flex-wrap items-center gap-4 pt-4">
-            <MagneticButton className="group relative px-8 py-4 bg-white text-black rounded-full font-bold text-lg hover:bg-indigo-50 transition-colors overflow-hidden">
-              <span className="relative z-10 flex items-center gap-2">
-                شروع به کار
-                <ArrowDownLeft className="w-5 h-5 group-hover:translate-y-1 group-hover:-translate-x-1 transition-transform" />
-              </span>
-            </MagneticButton>
-
-            <MagneticButton className="px-8 py-4 rounded-full font-medium text-text-primary border border-white/20 hover:bg-white/10 transition-colors flex items-center gap-2">
-              <Play className="w-4 h-4 fill-current" />
-              مشاهده ویدیو
-            </MagneticButton>
+          <div className="grid-tile h-full">
+            <Tile
+              title="موفقیت‌ها"
+              subtitle="داستان تیم‌های برتر"
+              img="/success.webp"
+              variant="default"
+              cta={{ label: "خواندن" }}
+            />
           </div>
 
-          {/* Stats */}
-          <div className="hero-subtext flex gap-8 pt-8 border-t border-white/10 w-full">
-            <div>
-              <div className="text-2xl font-bold text-text-primary">+۱۲۰</div>
-              <div className="text-xs text-gray-500 uppercase tracking-wider">استارتاپ فعال</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-text-primary">$۴.۵M</div>
-              <div className="text-xs text-gray-500 uppercase tracking-wider">سرمایه جذب شده</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-text-primary">۹۸٪</div>
-              <div className="text-xs text-gray-500 uppercase tracking-wider">رضایت</div>
-            </div>
+          <div className="grid-tile h-full">
+            <Tile
+              title="رویدادها"
+              subtitle="کارگاه‌ها و همایش‌ها"
+              variant="accent"
+              icon={<Play className="w-4 h-4" />}
+              cta={{ label: "تقویم" }}
+            />
           </div>
-        </div>
 
-        {/* RIGHT SIDE: Bento Grid */}
-        <div className="w-full lg:w-7/12 h-auto lg:h-[650px]">
-          <div className="bento-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-3 gap-4 h-auto lg:h-full w-full">
-            {/* Tile 1: Large Feature (Spans 2 rows) */}
-            <div className="grid-tile md:col-span-2 lg:col-span-1 lg:row-span-2 min-h-[220px] lg:h-auto">
-              <Tile
-                title="استارتاپ"
-                subtitle="برنامه جامع شتابدهی با دسترسی به منتورهای برتر صنعت"
-                img="/facilities_lab_wide.webp"
-                variant="default"
-                cta={{ label: "مشاهده برنامه" }}
-              />
-            </div>
+          <div className="grid-tile h-full">
+            <Tile
+              title="موفقیت‌ها"
+              subtitle="این بخش بعداً به‌روزرسانی می‌شود"
+              img="/success.webp"
+              variant="default"
+              cta={{ label: "خواندن" }}
+            />
+          </div>
 
-            {/* Tile 2: Support */}
-            <div className="grid-tile">
-              <Tile
-                title="حمایت"
-                subtitle="مشاوره حقوقی و مالی"
-                variant="default"
-                icon={<Sparkles className="w-4 h-4" />}
-                cta={{ label: "بیشتر" }}
-                variantClasses={{
-                  default: {
-                    text: "text-black dark:invert", // ← override the heading colour
-                    subText: "text-black/80 dark:invert", // optional: adjust subtitle too
-                  },
-                }}
-              />
-            </div>
-
-            {/* Tile 3: Events */}
-            <div className="grid-tile">
-              <Tile
-                title="رویدادها"
-                subtitle="کارگاه‌ها و همایش‌ها"
-                variant="accent"
-                icon={<Play className="w-4 h-4" />}
-                cta={{ label: "تقویم" }}
-              />
-            </div>
-
-            {/* Tile 4: Community (Wide) */}
-            <div className="grid-tile md:col-span-2">
-              <Tile
-                title="شبکه‌سازی"
-                subtitle="ارتباط با سرمایه‌گذاران و شرکای تجاری کلیدی"
-                img="/network.webp"
-                variant="default"
-                icon={<ArrowUpRight className="w-4 h-4" />}
-                cta={{ label: "عضویت" }}
-              />
-            </div>
-
-            {/* Tile 5: Success Stories */}
-            <div className="grid-tile">
-              <Tile
-                title="موفقیت‌ها"
-                subtitle="داستان تیم‌های برتر"
-                img="/success.webp"
-                variant="default"
-                cta={{ label: "خواندن" }}
-              />
-            </div>
-            <div className="grid-tile md:col-span-2">
-              <Tile
-                title="مدیریت"
-                subtitle="ابزارهای داخلی برای تیم‌ها و مدیران"
-                variant="default"
-                img="/industry_presentation.jpg"
-                icon={<ArrowUpRight className="w-4 h-4" />}
-                cta={{ label: "عضویت" }}
-              />
-            </div>
+          <div className="grid-tile h-full">
+            <Tile
+              title="حمایت"
+              subtitle="مشاوره حقوقی و مالی"
+              variant="default"
+              icon={<Sparkles className="w-4 h-4" />}
+              cta={{ label: "بیشتر" }}
+              variantClasses={{
+                default: {
+                  text: "text-black dark:invert",
+                  subText: "text-black/80 dark:invert",
+                },
+              }}
+            />
           </div>
         </div>
       </div>

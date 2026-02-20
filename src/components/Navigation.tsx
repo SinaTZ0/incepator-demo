@@ -2,12 +2,11 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
+// Only include links for sections actually rendered in App.tsx
 const navLinks = [
-  { label: "پژوهش", href: "#research" },
-  { label: "برنامه‌ها", href: "#ventures" },
-  { label: "افراد", href: "#faculty" },
-  { label: "همکاران", href: "#industry" },
+  { label: "تیم‌ها", href: "#stationed-teams" },
   { label: "رویدادها", href: "#events" },
+  { label: "موفقیت‌ها", href: "#success-stories" },
   { label: "تماس", href: "#contact" },
 ];
 

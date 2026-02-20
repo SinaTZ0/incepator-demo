@@ -2,7 +2,7 @@ import { useRef, useLayoutEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ArrowRight, Building2, Users, Calendar, ExternalLink, Rocket, Target, Briefcase } from "lucide-react";
-import MagneticButton from "../components/MagneticButton";
+// import MagneticButton from "../components/MagneticButton";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -242,7 +242,7 @@ export default function StationedTeamsSection() {
         </div>
 
         {/* CTA Section */}
-        <div className="glass-card p-8 md:p-12 text-center">
+        {/* <div className="glass-card p-8 md:p-12 text-center">
           <h3 className="text-2xl md:text-3xl font-display font-semibold text-text-primary mb-4">
             آماده پیوستن به شتاب‌دهنده هستید؟
           </h3>
@@ -260,7 +260,7 @@ export default function StationedTeamsSection() {
               <ExternalLink className="w-5 h-5" />
             </MagneticButton>
           </div>
-        </div>
+        </div> */}
       </div>
     </section>
   );
